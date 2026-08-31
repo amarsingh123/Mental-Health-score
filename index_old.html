@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed &amp; Focus — Mental Health Signal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F5F2EA;
+    --paper-warm: #EFEADD;
+    --ink: #22332E;
+    --ink-soft: #4B5D57;
+    --sage: #4F7B6B;
+    --sage-deep: #34584B;
+    --gold: #C79A4B;
+    --line: #DAD2BE;
+    --card: #FFFFFF;
+    --danger: #B5583F;
+    --radius-lg: 22px;
+    --radius-sm: 10px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .bg-texture{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 8% 12%, rgba(79,123,107,0.08), transparent 40%),
+      radial-gradient(circle at 92% 88%, rgba(199,154,75,0.10), transparent 45%);
+  }
+
+  .wrap{
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    margin-bottom: 56px;
+  }
+
+  .kicker-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom: 22px;
+  }
+
+  .mark{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: conic-gradient(from 200deg, var(--sage), var(--gold), var(--sage));
+    flex-shrink: 0;
+  }
+
+  .kicker-row span{
+    font-size: 15px;
+    color: var(--ink-soft);
+    letter-spacing: 0.01em;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2.1rem, 5vw, 3.1rem);
+    line-height: 1.12;
+    margin: 0 0 20px;
+    max-width: 15ch;
+    color: var(--sage-deep);
+  }
+
+  h1 em{
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero p{
+    max-width: 56ch;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ---------- Form card ---------- */
+  form{
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 2px rgba(34,51,46,0.04), 0 18px 40px -24px rgba(34,51,46,0.25);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .section{
+    padding: 36px 40px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .section:last-of-type{
+    border-bottom: none;
+  }
+
+  .section h2{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+
+  .section .hint{
+    margin: 0 0 24px;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+  }
+
+  .field{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .field.span-2{ grid-column: 1 / -1; }
+
+  .field label{
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .field .unit-hint{
+    font-weight: 400;
+    color: #9AA69F;
+  }
+
+  input, select{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.98rem;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.4px solid var(--line);
+    background: var(--paper-warm);
+    color: var(--ink);
+    transition: border-color 0.15s ease, background 0.15s ease;
+    width: 100%;
+  }
+
+  select{
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%234B5D57' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  input:hover, select:hover{ border-color: #C6BE9F; }
+
+  input:focus, select:focus{
+    outline: none;
+    border-color: var(--sage);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(79,123,107,0.14);
+  }
+
+  input:invalid:not(:placeholder-shown){
+    border-color: var(--danger);
+  }
+
+  /* range-style slider fields */
+  .slider-field .row{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+  }
+
+  input[type="range"]{
+    -webkit-appearance: none;
+    appearance: none;
+    height: 5px;
+    background: var(--line);
+    border-radius: 4px;
+    padding: 0;
+    flex: 1;
+  }
+
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--sage);
+    border: 3px solid #fff;
+    box-shadow: 0 1px 4px rgba(34,51,46,0.35);
+    cursor: pointer;
+    margin-top: -6.5px;
+  }
+
+  input[type="range"]::-moz-range-thumb{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--sage);
+    border: 3px solid #fff;
+    box-shadow: 0 1px 4px rgba(34,51,46,0.35);
+    cursor: pointer;
+  }
+
+  .slider-value{
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--sage-deep);
+    min-width: 52px;
+    text-align: right;
+    font-size: 0.95rem;
+  }
+
+  /* ---------- Submit ---------- */
+  .submit-row{
+    padding: 32px 40px 40px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  button.submit{
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    background: var(--sage-deep);
+    color: #F5F2EA;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 15px 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 10px 24px -12px rgba(52,88,75,0.55);
+  }
+
+  button.submit:hover{
+    background: var(--sage);
+    transform: translateY(-1px);
+  }
+
+  button.submit:disabled{
+    opacity: 0.75;
+    cursor: progress;
+    transform: none;
+  }
+
+  .submit-note{
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+  }
+
+  /* loading dots inside button */
+  .dots{
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .dots span{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.35;
+    animation: pulse 1.1s ease-in-out infinite;
+  }
+  .dots span:nth-child(2){ animation-delay: 0.15s; }
+  .dots span:nth-child(3){ animation-delay: 0.3s; }
+  @keyframes pulse{
+    0%, 60%, 100%{ opacity: 0.3; transform: scale(0.85); }
+    30%{ opacity: 1; transform: scale(1); }
+  }
+
+  .error-banner{
+    display: none;
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    background: #FBEDE8;
+    border: 1px solid #E7C4B5;
+    color: var(--danger);
+    font-size: 0.9rem;
+  }
+  .error-banner.show{ display: block; }
+
+  /* ---------- Result card ---------- */
+  #result{
+    margin-top: 40px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+  #result.show{
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .result-card{
+    background: linear-gradient(165deg, var(--sage-deep), #22403A 78%);
+    border-radius: var(--radius-lg);
+    padding: 44px 40px;
+    color: #F5F2EA;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card::before{
+    content: "";
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(199,154,75,0.28), transparent 70%);
+    top: -140px;
+    right: -100px;
+  }
+
+  .result-top{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .result-eyebrow{
+    font-size: 0.92rem;
+    color: #C9DAD1;
+    margin: 0 0 6px;
+  }
+
+  .score-display{
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .score-number{
+    font-family: 'Fraunces', serif;
+    font-size: 4.6rem;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .score-outof{
+    font-size: 1.3rem;
+    color: #C9DAD1;
+  }
+
+  .score-badge{
+    background: rgba(245,242,234,0.14);
+    border: 1px solid rgba(245,242,234,0.3);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .scale{
+    position: relative;
+    margin-top: 30px;
+  }
+
+  .scale-track{
+    height: 10px;
+    border-radius: 6px;
+    background: rgba(245,242,234,0.16);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scale-fill{
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #C4715A, var(--gold) 55%, #8FC1A9);
+    width: 0%;
+    transition: width 1s cubic-bezier(.22,1,.36,1);
+  }
+
+  .scale-marker{
+    position: absolute;
+    top: -7px;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    left: 0%;
+    transition: left 1s cubic-bezier(.22,1,.36,1);
+  }
+  .scale-marker::after{
+    content:"";
+    display:block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #F5F2EA;
+    border: 3px solid var(--sage-deep);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    margin: 5px auto 0;
+  }
+
+  .scale-labels{
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #A9BFB4;
+    margin-top: 10px;
+  }
+
+  .result-copy{
+    position: relative;
+    margin-top: 28px;
+    font-size: 1rem;
+    color: #E4EEE8;
+    max-width: 52ch;
+  }
+
+  .result-note{
+    position: relative;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(245,242,234,0.18);
+    font-size: 0.82rem;
+    color: #A9BFB4;
+  }
+
+  @media (max-width: 640px){
+    .wrap{ padding: 40px 16px 72px; }
+    .section{ padding: 28px 22px; }
+    .grid{ grid-template-columns: 1fr; }
+    .submit-row{ padding: 26px 22px 32px; flex-direction: column; align-items: stretch; }
+    button.submit{ justify-content: center; }
+    .result-card{ padding: 32px 24px; }
+    .score-number{ font-size: 3.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-texture"></div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker-row">
+      <div class="mark"></div>
+      <span>A quick read on your digital habits</span>
+    </div>
+    <h1>How's your feed <em>really</em> treating you?</h1>
+    <p>Answer a few honest questions about your screen time, sleep and stress, and a trained model will estimate a mental wellbeing score based on patterns from thousands of students like you.</p>
+  </header>
+
+  <form id="predict-form" novalidate>
+
+    <div class="section">
+      <h2>About you</h2>
+      <p class="hint">The basics — used only to compare you against similar peer groups.</p>
+      <div class="grid">
+        <div class="field">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" min="10" max="100" step="1" placeholder="e.g. 21" required>
+        </div>
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" required>
+            <option value="" disabled selected>Choose one</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="country">Country</label>
+          <input list="country-list" id="country" name="country" placeholder="e.g. India" required>
+          <datalist id="country-list">
+            <option value="India"></option>
+            <option value="USA"></option>
+            <option value="Canada"></option>
+            <option value="Australia"></option>
+            <option value="UK"></option>
+            <option value="Germany"></option>
+            <option value="Mexico"></option>
+            <option value="Turkey"></option>
+            <option value="France"></option>
+            <option value="Other"></option>
+          </datalist>
+        </div>
+        <div class="field">
+          <label for="academic_level">Academic level</label>
+          <select id="academic_level" name="academic_level" required>
+            <option value="" disabled selected>Choose one</option>
+            <option value="High School">High School</option>
+            <option value="Undergraduate">Undergraduate</option>
+            <option value="Graduate">Graduate</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Your platform</h2>
+      <p class="hint">How and why you tend to open the app.</p>
+      <div class="grid">
+        <div class="field">
+          <label for="most_used_platform">Most-used platform</label>
+          <select id="most_used_platform" name="most_used_platform" required>
+            <option value="" disabled selected>Choose one</option>
+            <option>Facebook</option>
+            <option>Instagram</option>
+            <option>Snapchat</option>
+            <option>Twitter</option>
+            <option>YouTube</option>
+            <option>TikTok</option>
+            <option>LinkedIn</option>
+            <option>LINE</option>
+            <option>KakaoTalk</option>
+            <option>VKontakte</option>
+            <option>WhatsApp</option>
+            <option>WeChat</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="purpose_of_use">Main purpose of use</label>
+          <select id="purpose_of_use" name="purpose_of_use" required>
+            <option value="" disabled selected>Choose one</option>
+            <option>Networking</option>
+            <option>Education</option>
+            <option>Entertainment</option>
+            <option>News</option>
+          </select>
+        </div>
+        <div class="field slider-field">
+          <label for="avg_daily_usage_hours">Average daily usage <span class="unit-hint">(hours)</span></label>
+          <div class="row">
+            <input type="range" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="16" step="0.1" value="3.5">
+            <span class="slider-value" data-for="avg_daily_usage_hours">3.5 h</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="daily_unlocks">Daily phone unlocks</label>
+          <input type="number" id="daily_unlocks" name="daily_unlocks" min="0" step="1" placeholder="e.g. 45" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Daily rhythm</h2>
+      <p class="hint">The parts of your day that compete with the screen.</p>
+      <div class="grid">
+        <div class="field slider-field">
+          <label for="study_hours">Study <span class="unit-hint">(hours/day)</span></label>
+          <div class="row">
+            <input type="range" id="study_hours" name="study_hours" min="0" max="16" step="0.1" value="3">
+            <span class="slider-value" data-for="study_hours">3.0 h</span>
+          </div>
+        </div>
+        <div class="field slider-field">
+          <label for="physical_activity_hours">Physical activity <span class="unit-hint">(hours/day)</span></label>
+          <div class="row">
+            <input type="range" id="physical_activity_hours" name="physical_activity_hours" min="0" max="8" step="0.1" value="1">
+            <span class="slider-value" data-for="physical_activity_hours">1.0 h</span>
+          </div>
+        </div>
+        <div class="field slider-field">
+          <label for="sleep_hours_per_night">Sleep <span class="unit-hint">(hours/night)</span></label>
+          <div class="row">
+            <input type="range" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="12" step="0.1" value="7">
+            <span class="slider-value" data-for="sleep_hours_per_night">7.0 h</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="stress_level">Typical stress level</label>
+          <select id="stress_level" name="stress_level" required>
+            <option value="" disabled selected>Choose one</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+            <option>Very High</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="submit" id="submit-btn">
+        <span id="submit-label">Get my score</span>
+      </button>
+      <span class="submit-note">Runs against your local model in a couple of seconds.</span>
+    </div>
+
+    <div class="error-banner" id="error-banner" style="margin: 0 40px 32px;"></div>
+  </form>
+
+  <section id="result" aria-live="polite">
+    <div class="result-card">
+      <div class="result-top">
+        <div>
+          <p class="result-eyebrow">Your predicted mental health score</p>
+          <div class="score-display">
+            <span class="score-number" id="score-number">0.0</span>
+            <span class="score-outof">/ 10</span>
+          </div>
+        </div>
+        <div class="score-badge" id="score-badge">—</div>
+      </div>
+
+      <div class="scale">
+        <div class="scale-track"><div class="scale-fill" id="scale-fill"></div></div>
+        <div class="scale-marker" id="scale-marker"></div>
+        <div class="scale-labels"><span>Strained</span><span>Steady</span><span>Thriving</span></div>
+      </div>
+
+      <p class="result-copy" id="result-copy"></p>
+
+      <p class="result-note">Estimated by a machine learning model trained on self-reported student survey data. It's a signal, not a diagnosis — treat it as a prompt to check in with yourself, not a verdict.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const API_BASE = "http://127.0.0.1:2200";
+
+  const form = document.getElementById('predict-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const submitLabel = document.getElementById('submit-label');
+  const errorBanner = document.getElementById('error-banner');
+  const resultSection = document.getElementById('result');
+
+  // Live slider value readouts
+  document.querySelectorAll('input[type="range"]').forEach(slider => {
+    const readout = document.querySelector(`.slider-value[data-for="${slider.id}"]`);
+    const update = () => { readout.textContent = `${parseFloat(slider.value).toFixed(1)} h`; };
+    slider.addEventListener('input', update);
+    update();
+  });
+
+  function setLoading(isLoading){
+    submitBtn.disabled = isLoading;
+    submitLabel.innerHTML = isLoading
+      ? `Reading your patterns <span class="dots"><span></span><span></span><span></span></span>`
+      : `Get my score`;
+  }
+
+  function showError(message){
+    errorBanner.textContent = message;
+    errorBanner.classList.add('show');
+  }
+
+  function clearError(){
+    errorBanner.classList.remove('show');
+    errorBanner.textContent = '';
+  }
+
+  function describeScore(score){
+    if (score < 3) {
+      return {
+        badge: 'Strained',
+        copy: "Your habits are leaning hard on your wellbeing right now. Small shifts — a firmer bedtime, a walk between study blocks — tend to move this number more than cutting the app out entirely."
+      };
+    }
+    if (score < 5) {
+      return {
+        badge: 'Under pressure',
+        copy: "There's some real strain here, likely a mix of screen time and stretched sleep or stress. Worth noticing which one moves first if you adjust it."
+      };
+    }
+    if (score < 7) {
+      return {
+        badge: 'Holding steady',
+        copy: "A fairly balanced picture — your habits aren't working against you, but there's room to tip further toward thriving with a bit more rest or activity."
+      };
+    }
+    return {
+      badge: 'Thriving',
+      copy: "Your daily rhythm looks like it's supporting you well. Whatever you're doing with sleep, activity and screen time is paying off — keep an eye on it as things change."
+    };
+  }
+
+  function renderResult(score){
+    const clamped = Math.max(0, Math.min(10, score));
+    const pct = (clamped / 10) * 100;
+
+    document.getElementById('score-number').textContent = score.toFixed(2);
+    document.getElementById('scale-fill').style.width = `${pct}%`;
+    document.getElementById('scale-marker').style.left = `${pct}%`;
+
+    const { badge, copy } = describeScore(clamped);
+    document.getElementById('score-badge').textContent = badge;
+    document.getElementById('result-copy').textContent = copy;
+
+    resultSection.classList.add('show');
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+
+    if (!form.reportValidity()) return;
+
+    const fd = new FormData(form);
+    const payload = {
+      age: parseInt(fd.get('age'), 10),
+      gender: fd.get('gender'),
+      country: fd.get('country').trim(),
+      academic_level: fd.get('academic_level'),
+      most_used_platform: fd.get('most_used_platform'),
+      purpose_of_use: fd.get('purpose_of_use'),
+      avg_daily_usage_hours: parseFloat(fd.get('avg_daily_usage_hours')),
+      daily_unlocks: parseInt(fd.get('daily_unlocks'), 10),
+      study_hours: parseFloat(fd.get('study_hours')),
+      physical_activity_hours: parseFloat(fd.get('physical_activity_hours')),
+      sleep_hours_per_night: parseFloat(fd.get('sleep_hours_per_night')),
+      stress_level: fd.get('stress_level')
+    };
+
+    setLoading(true);
+    resultSection.classList.remove('show');
+
+    try {
+      const res = await fetch(`${API_BASE}/predict`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        let detail = `Request failed (${res.status})`;
+        try {
+          const errBody = await res.json();
+          if (errBody?.detail) {
+            detail = typeof errBody.detail === 'string'
+              ? errBody.detail
+              : JSON.stringify(errBody.detail);
+          }
+        } catch (_) {}
+        throw new Error(detail);
+      }
+
+      const data = await res.json();
+      renderResult(data.predicted_mental_health_score);
+
+    } catch (err) {
+      showError(
+        err.message?.includes('Failed to fetch')
+          ? "Can't reach the API. Make sure uvicorn is running on port 2200 and try again."
+          : `Something went wrong: ${err.message}`
+      );
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
+
+</body>
+</html>
